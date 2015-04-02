@@ -1,0 +1,8 @@
+#!/bin/sh
+
+pipework --wait
+nohup /usr/local/bin/register &
+
+ulimit -n 1024
+mkdir -p /data
+redis-server --dir /data

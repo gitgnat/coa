@@ -1,0 +1,7 @@
+#!/bin/sh
+
+pipework --wait
+
+nohup /usr/local/bin/register &
+
+/opt/consul/bin/consul -config-dir=/opt/consul/etc agent -server -bootstrap-expect=1 -data-dir=/opt/consul/data -node=consul.0 -bind=$CONSUL_SERVER_IP -client=$CONSUL_CLIENT_IP -ui-dir=/opt/consul/webui -dc=$DATACENTER -log-level=info -join=$CONSUL_IP

@@ -1,0 +1,7 @@
+#!/bin/sh
+
+pipework --wait
+
+nohup /usr/local/bin/register &
+
+/opt/es/bin/elasticsearch

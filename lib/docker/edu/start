@@ -1,0 +1,5 @@
+#!/bin/sh
+
+pipework --wait
+nohup /consul/bin/register &
+sleep infinity

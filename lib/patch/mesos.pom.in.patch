@@ -1,0 +1,10 @@
+--- mesos.pom.in	2014-06-06 02:31:35.000000000 -0400
++++ mesos-18.pom.in	2014-06-10 03:59:10.109709014 -0400
+@@ -133,6 +133,7 @@
+         <configuration>
+           <sourcepath>@abs_top_srcdir@/src/java/src</sourcepath>
+           <subpackages>org.apache.mesos</subpackages>
++          <additionalparam>-Xdoclint:none</additionalparam>
+         </configuration>
+         <executions>
+           <execution>

@@ -1,0 +1,46 @@
+default: &default
+  tty: true
+  cap-add: NET_ADMIN
+  volume: '/dev/log:/dev/log'
+  instances: 1
+
+default_env: &default_env
+  - 'CONSUL_SERVER_IP=0.0.0.0'
+  - 'CONSUL_CLIENT_IP=0.0.0.0'
+  - 'CONSUL_IP=192.168.16.5'
+  - 'DATACENTER=dev0'
+
+app:
+  network: 
+    name: dev0
+    cidr: '192.168.16.1/24'
+  docker_nodes:
+  - { <<: *default
+    , name: consul
+    , image: consul
+    , cidr: '192.168.16.5/24'
+    , env: ['SERVICE=consul', 'HOSTNAME=consul', *default_env]
+    }
+  - { <<: *default
+    , name: ddt
+    , image: ddt
+    , privileged: true
+    , cidr: '192.168.16.10/24'
+    , env: ['SERVICE=ddt', 'HOSTNAME=ddt', 'CONSUL_DNS=/consul/192.168.16.5#8600', *default_env]
+    }
+  - { <<: *default
+    , image: redis
+    , cidr: dhcp
+    , env: [SERVICE='redis', 'HOSTNAME=redis', *default_env]
+    }
+  - { <<: *default
+    , image: rabbitmq
+    , cidr: dhcp
+    , env: ['SERVICE=rabbitmq', 'HOSTNAME=rabbitmq', *default_env]
+    }
+  - { <<: *default
+    , image: sensu
+    , cidr: dhcp
+    , env: ['SERVICE=sensu', 'HOSTNAME=sensu', *default_env]
+    }
+

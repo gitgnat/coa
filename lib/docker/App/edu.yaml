@@ -1,0 +1,50 @@
+default: &default
+  tty: true
+  cap-add: NET_ADMIN
+  volume: '/dev/log:/dev/log'
+  instances: 1
+
+default_env: &default_env
+  - 'CONSUL_SERVER_IP=0.0.0.0'
+  - 'CONSUL_CLIENT_IP=0.0.0.0'
+  - 'CONSUL_IP=192.168.16.5'
+  - 'DATACENTER=dev0'
+
+app:
+  network: 
+    name: dev0
+    cidr: '192.168.16.1/24'
+  docker_nodes:
+  - { <<: *default
+    , name: consul
+    , image: consul
+    , cidr: '192.168.16.5/24'
+    , env: ['SERVICE=consul', *default_env]
+    }
+  - { <<: *default
+    , name: ddt
+    , image: ddt
+    , privileged: true
+    , cidr: '192.168.16.10/24'
+    , env: ['SERVICE=ddt', 'CONSUL_DNS=/consul/192.168.16.5#8600', *default_env]
+    }
+  - { <<: *default
+    , image: postgres
+    , cidr: dhcp
+    , env: ['SERVICE=db', 'POSTGRESQL_USER=edu', 'POSTGRESQL_PASS=edu', 'POSTGRESQL_DB=edu', *default_env]
+    }
+  - { <<: *default
+    , image: elasticsearch
+    , cidr: dhcp
+    , env: ['SERVICE=es', *default_env]
+    }
+  - { <<: *default
+    , image: grafana
+    , cidr: dhcp
+    , env: ['SERVICE=grafana', *default_env]
+    }
+  - { <<: *default
+    , image: nginx
+    , cidr: dhcp
+    , env: ['SERVICE=nginx', *default_env]
+    }

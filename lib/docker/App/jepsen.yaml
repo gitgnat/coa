@@ -1,0 +1,13 @@
+default: &default
+  tty: true
+  cap-add: NET_ADMIN
+  volume: '/dev/log:/dev/log'
+  instances: 1
+
+app:
+  docker_nodes:
+  - { <<: *default
+    , name: jepsen-dev
+    , image: jepsen
+    , net: host
+    }

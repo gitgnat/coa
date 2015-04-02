@@ -1,0 +1,9 @@
+redirects:
+  - {statusCode: 301, src: "http://h", dst: "http://reddit.com/r/haskell"}
+  - {statusCode: 301, src: "http://sh", dst: "http://reddit.com/r/strictly_haskell"}
+  - {statusCode: 301, src: "http://p", dst: "http://reddit.com/r/politics"}
+
+url: 
+  {statusCode: 301, src: "http://*", dst: "http://google.com"}
+
+

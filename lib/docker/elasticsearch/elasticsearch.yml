@@ -1,0 +1,5 @@
+path:
+  data: /data/edu
+  logs: /data/log
+  plugins: /data/plugins
+  work: /data/work

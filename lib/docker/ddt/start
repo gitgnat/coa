@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# eth1 is the default created by pipework
+/usr/local/bin/pipework --wait
+
+nohup /usr/local/bin/register &
+
+# @todo: use env var (LISTEN_ADDRESS) for arg. "--listen-address"
+# --no-resolv
+dnsmasq -interface=eth1 \
+    --listen-address 192.168.16.10 \
+    --except-interface=lo,eth0 \
+    --no-hosts \
+    --dhcp-authoritative \
+    --strict-order \
+    --dhcp-sequential-ip \
+    --dhcp-range=192.168.16.100,192.168.16.254 \
+    --dhcp-boot=pxelinux.0,pxeserver,192.168.16.10 \
+    --pxe-service=x86PC,"Install Linux",pxelinux \
+    --enable-tftp \
+    --tftp-root=/tftp/ \
+    --server=$CONSUL_DNS
+
+sleep infinity
